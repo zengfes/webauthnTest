@@ -17,7 +17,7 @@
       <div class="mt3">
         <label class="db fw6 lh-copy" for="displayname">Display Name:</label>
         <input
-          v-model="display"
+          v-model="user"
           class="pa2 input-reset ba bg-transparent hover-bg-hot-pink hover-white w-100"
           type="text"
           name="display"
@@ -28,7 +28,7 @@
       <div class="mt3">
         <label class="db fw6 lh-copy" for="pwdname">Password Name:</label>
         <input
-          v-model="password"
+          v-model="user"
           class="pa2 input-reset ba bg-transparent hover-bg-hot-pink hover-white w-100"
           type="text"
           name="display"
@@ -41,7 +41,7 @@
           >Credential Name:</label
         >
         <input
-          v-model="credential"
+          v-model="user"
           class="pa2 input-reset ba bg-transparent hover-bg-hot-pink hover-white w-100"
           type="text"
           name="credname"
@@ -78,9 +78,9 @@ import base64js from "base64-js";
 import axios from 'axios';
 // document.addEventListener("submit", (e) => e.preventDefault();
 const user = ref();
-const display = ref();
-const password = ref();
-const credential = ref();
+// const display = ref();
+// const password = ref();
+// const credential = ref();
 const getuser = ()=>{
   console.log(typeof JSON.stringify('encodedResult'))
 }
@@ -94,15 +94,30 @@ const register = () =>
   //     formData.get("display"),
   //     formData.get("pwdname")
   // )
-  axios.post(
- 
-    'api/register',
-     {
-      displayName: display.value,
-      password: password.value,
+  axios({
+  method: 'post',
+  url: 'api/register',
+  headers: {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  },
+  data: {
+    displayName: user.value,
+      password: user.value,
       username: user.value,
+  },
+   withCredentials: true
+
+})
+  // axios.post(
+ 
+  //   'api/register',
+  //    {
+  //     displayName: display.value,
+  //     password: password.value,
+  //     username: user.value,
     
-  })
+  // })
   // fetch("", {
   //   method: "POST",
   //   headers: {
@@ -164,14 +179,29 @@ const register = () =>
       formData.append("credential", JSON.stringify(encodedResult));
       console.log(encodedResult)
       console.log(typeof JSON.stringify(encodedResult))
-      return axios.post(
-          'api/finishauth',
-           {
+      return  axios({
+          method: 'post',
+          url: 'api/finishauth',
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          data: {
             credential: JSON.stringify(encodedResult),
             username: user.value,
-            credname: credential.value
-          }  
-      )
+            credname: user.value
+          },
+          withCredentials: true
+
+        })
+      // return axios.post(
+      //     'api/finishauth',
+      //      {
+      //       credential: JSON.stringify(encodedResult),
+      //       username: user.value,
+      //       credname: credential.value
+      //     }  
+      // )
       // return fetch("api/finishauth", {
       //   method: "POST",
       //   headers: {

@@ -81,6 +81,10 @@ const user = ref();
 const display = ref();
 const password = ref();
 const credential = ref();
+const getuser = ()=>{
+  console.log(typeof JSON.stringify('encodedResult'))
+}
+
 const register = () => 
  {
  
@@ -91,15 +95,13 @@ const register = () =>
   //     formData.get("pwdname")
   // )
   axios.post(
-  {
-    method: 'post',
-    url: 'api/register',
-    data: {
+ 
+    'api/register',
+     {
       displayName: display.value,
       password: password.value,
       username: user.value,
-    },
-    withCredentials : true
+    
   })
   // fetch("", {
   //   method: "POST",
@@ -161,17 +163,14 @@ const register = () =>
       const formData = new FormData(form);
       formData.append("credential", JSON.stringify(encodedResult));
       console.log(encodedResult)
+      console.log(typeof JSON.stringify(encodedResult))
       return axios.post(
-        {
-          method: 'post',
-          url: 'api/finishauth',
-          data: {
+          'api/finishauth',
+           {
             credential: JSON.stringify(encodedResult),
             username: user.value,
             credname: credential.value
-          },
-          withCredentials : true
-        }
+          }  
       )
       // return fetch("api/finishauth", {
       //   method: "POST",

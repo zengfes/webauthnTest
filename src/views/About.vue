@@ -155,21 +155,27 @@ const register = () =>
       const formData = new FormData(form);
       formData.append("credential", JSON.stringify(encodedResult));
       console.log(encodedResult)
-      return fetch("api/finishauth", {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          credential: JSON.stringify(encodedResult),
-          username: user.value,
-          credname: credential.value,
-        }),
-      });
+      return axios.post("api/finishauth",{
+        credential: JSON.stringify(encodedResult),
+        username: user.value,
+        credname: credential.value
+      })
+      // return fetch("api/finishauth", {
+      //   method: "POST",
+      //   headers: {
+      //     "Accept": "application/json",
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     credential: JSON.stringify(encodedResult),
+      //     username: user.value,
+      //     credname: credential.value,
+      //   }),
+      // });
     })
     .then((response) => {
-      followRedirect(response);
+      console.log(response)
+      // followRedirect(response);
     })
     .catch((error) => {
       displayError(error);
@@ -200,17 +206,17 @@ function uint8arrayToBase64url(bytes) {
     return uint8arrayToBase64url(new Uint8Array(bytes));
   }
 }
-class WebAuthServerError extends Error {
-  constructor(foo = "bar", ...params) {
-    super(...params);
-    this.name = "ServerError";
-    this.foo = foo;
-    this.date = new Date();
-  }
-}
-function throwError(response) {
-  throw new WebAuthServerError("Error from client", response.body);
-}
+// class WebAuthServerError extends Error {
+//   constructor(foo = "bar", ...params) {
+//     super(...params);
+//     this.name = "ServerError";
+//     this.foo = foo;
+//     this.date = new Date();
+//   }
+// }
+// function throwError(response) {
+//   throw new WebAuthServerError("Error from client", response.body);
+// }
 // function checkStatus(response) {
 //   if (response.status !== 200) {
 //     throwError(response);
@@ -223,13 +229,13 @@ function throwError(response) {
 //   checkStatus(response);
 //   return response.json();
 // }
-function followRedirect(response) {
-  if (response.status === 200) {
-    window.location.href = response.url;
-  } else {
-    throwError(response);
-  }
-}
+// function followRedirect(response) {
+//   if (response.status === 200) {
+//     window.location.href = response.url;
+//   } else {
+//     throwError(response);
+//   }
+// }
 function displayError(error) {
   const errorElem = document.getElementById("errors");
   errorElem.innerHTML = error;
